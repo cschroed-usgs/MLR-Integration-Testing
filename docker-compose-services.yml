@@ -180,7 +180,9 @@
             - mlr.validator
       ports:
         - "6027:6027"
-      << : *depends-on-waterauth
+      depends_on:
+        - water-auth-server
+        - mlr-legacy
 
     mlr-ddot-ingester:
       image: cidasdpdasartip.cr.usgs.gov:8447/mlr/mlr-ddot-ingester:latest
