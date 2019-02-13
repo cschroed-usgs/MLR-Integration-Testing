@@ -7,3 +7,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - isuftin@usgs.gov - initial commit
+- zmoore@usgs.gov - added basic tests for each service
+- zmoore@ussgs.gov - add load tests
