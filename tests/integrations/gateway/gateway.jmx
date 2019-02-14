@@ -133,7 +133,7 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.status</stringProp>
+            <stringProp name="JSON_PATH">$.workflowSteps[:1].httpStatus</stringProp>
             <stringProp name="EXPECTED_VALUE">404</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -142,7 +142,7 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.steps</stringProp>
+            <stringProp name="JSON_PATH">$.workflowSteps</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
             <boolProp name="JSONVALIDATION">false</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -151,8 +151,8 @@
           </JSONPathAssertion>
           <hashTree/>
           <SizeAssertion guiclass="SizeAssertionGui" testclass="SizeAssertion" testname="Size Assertion" enabled="true">
-            <stringProp name="Assertion.test_field">SizeAssertion.response_network_size</stringProp>
-            <stringProp name="SizeAssertion.size">736</stringProp>
+            <stringProp name="Assertion.test_field">SizeAssertion.response_data</stringProp>
+            <stringProp name="SizeAssertion.size">370</stringProp>
             <intProp name="SizeAssertion.operator">1</intProp>
           </SizeAssertion>
           <hashTree/>
@@ -221,7 +221,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="51512">404</stringProp>
+              <stringProp name="49586">200</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
@@ -239,7 +239,7 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.status</stringProp>
+            <stringProp name="JSON_PATH">$.sites[:1].steps[:1].httpStatus</stringProp>
             <stringProp name="EXPECTED_VALUE">404</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -248,7 +248,7 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.steps</stringProp>
+            <stringProp name="JSON_PATH">$.workflowSteps</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
             <boolProp name="JSONVALIDATION">false</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -258,7 +258,7 @@
           <hashTree/>
           <SizeAssertion guiclass="SizeAssertionGui" testclass="SizeAssertion" testname="Size Assertion" enabled="true">
             <stringProp name="Assertion.test_field">SizeAssertion.response_network_size</stringProp>
-            <stringProp name="SizeAssertion.size">1122</stringProp>
+            <stringProp name="SizeAssertion.size">1106</stringProp>
             <intProp name="SizeAssertion.operator">1</intProp>
           </SizeAssertion>
           <hashTree/>
@@ -327,7 +327,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="51512">404</stringProp>
+              <stringProp name="49586">200</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
@@ -345,16 +345,7 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.status</stringProp>
-            <stringProp name="EXPECTED_VALUE">404</stringProp>
-            <boolProp name="JSONVALIDATION">true</boolProp>
-            <boolProp name="EXPECT_NULL">false</boolProp>
-            <boolProp name="INVERT">false</boolProp>
-            <boolProp name="ISREGEX">false</boolProp>
-          </JSONPathAssertion>
-          <hashTree/>
-          <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.steps</stringProp>
+            <stringProp name="JSON_PATH">$.workflowSteps</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
             <boolProp name="JSONVALIDATION">false</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -364,7 +355,7 @@
           <hashTree/>
           <SizeAssertion guiclass="SizeAssertionGui" testclass="SizeAssertion" testname="Size Assertion" enabled="true">
             <stringProp name="Assertion.test_field">SizeAssertion.response_network_size</stringProp>
-            <stringProp name="SizeAssertion.size">2038</stringProp>
+            <stringProp name="SizeAssertion.size">587</stringProp>
             <intProp name="SizeAssertion.operator">1</intProp>
           </SizeAssertion>
           <hashTree/>
@@ -435,7 +426,7 @@
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="51512">404</stringProp>
+                <stringProp name="49586">200</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
@@ -445,7 +436,7 @@
             <hashTree/>
             <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
               <stringProp name="JSON_PATH">$.name</stringProp>
-              <stringProp name="EXPECTED_VALUE">Complete Workflow</stringProp>
+              <stringProp name="EXPECTED_VALUE">Validate and Process D dot File Workflow</stringProp>
               <boolProp name="JSONVALIDATION">true</boolProp>
               <boolProp name="EXPECT_NULL">false</boolProp>
               <boolProp name="INVERT">false</boolProp>
@@ -453,28 +444,13 @@
             </JSONPathAssertion>
             <hashTree/>
             <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-              <stringProp name="JSON_PATH">$.status</stringProp>
-              <stringProp name="EXPECTED_VALUE">404</stringProp>
-              <boolProp name="JSONVALIDATION">true</boolProp>
-              <boolProp name="EXPECT_NULL">false</boolProp>
-              <boolProp name="INVERT">false</boolProp>
-              <boolProp name="ISREGEX">false</boolProp>
-            </JSONPathAssertion>
-            <hashTree/>
-            <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-              <stringProp name="JSON_PATH">$.steps</stringProp>
+              <stringProp name="JSON_PATH">$.workflowSteps</stringProp>
               <stringProp name="EXPECTED_VALUE"></stringProp>
               <boolProp name="JSONVALIDATION">false</boolProp>
               <boolProp name="EXPECT_NULL">false</boolProp>
               <boolProp name="INVERT">false</boolProp>
               <boolProp name="ISREGEX">false</boolProp>
             </JSONPathAssertion>
-            <hashTree/>
-            <SizeAssertion guiclass="SizeAssertionGui" testclass="SizeAssertion" testname="Size Assertion" enabled="true">
-              <stringProp name="Assertion.test_field">SizeAssertion.response_network_size</stringProp>
-              <stringProp name="SizeAssertion.size">3683</stringProp>
-              <intProp name="SizeAssertion.operator">1</intProp>
-            </SizeAssertion>
             <hashTree/>
           </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Perform Full Add Workflow - Duplicate Error" enabled="true">
@@ -512,7 +488,7 @@
             <hashTree/>
             <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
               <collectionProp name="Asserion.test_strings">
-                <stringProp name="51508">400</stringProp>
+                <stringProp name="49586">200</stringProp>
               </collectionProp>
               <stringProp name="Assertion.custom_message"></stringProp>
               <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
@@ -522,7 +498,7 @@
             <hashTree/>
             <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
               <stringProp name="JSON_PATH">$.name</stringProp>
-              <stringProp name="EXPECTED_VALUE">Complete Workflow</stringProp>
+              <stringProp name="EXPECTED_VALUE">Validate and Process D dot File Workflow</stringProp>
               <boolProp name="JSONVALIDATION">true</boolProp>
               <boolProp name="EXPECT_NULL">false</boolProp>
               <boolProp name="INVERT">false</boolProp>
@@ -530,8 +506,8 @@
             </JSONPathAssertion>
             <hashTree/>
             <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-              <stringProp name="JSON_PATH">$.status</stringProp>
-              <stringProp name="EXPECTED_VALUE">400</stringProp>
+              <stringProp name="JSON_PATH">$.sites[:1].steps[:1].httpStatus</stringProp>
+              <stringProp name="EXPECTED_VALUE">406</stringProp>
               <boolProp name="JSONVALIDATION">true</boolProp>
               <boolProp name="EXPECT_NULL">false</boolProp>
               <boolProp name="INVERT">false</boolProp>
@@ -539,19 +515,13 @@
             </JSONPathAssertion>
             <hashTree/>
             <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-              <stringProp name="JSON_PATH">$.steps</stringProp>
+              <stringProp name="JSON_PATH">$.sites[:1].steps</stringProp>
               <stringProp name="EXPECTED_VALUE"></stringProp>
               <boolProp name="JSONVALIDATION">false</boolProp>
               <boolProp name="EXPECT_NULL">false</boolProp>
               <boolProp name="INVERT">false</boolProp>
               <boolProp name="ISREGEX">false</boolProp>
             </JSONPathAssertion>
-            <hashTree/>
-            <SizeAssertion guiclass="SizeAssertionGui" testclass="SizeAssertion" testname="Size Assertion" enabled="true">
-              <stringProp name="Assertion.test_field">SizeAssertion.response_network_size</stringProp>
-              <stringProp name="SizeAssertion.size">2478</stringProp>
-              <intProp name="SizeAssertion.operator">1</intProp>
-            </SizeAssertion>
             <hashTree/>
           </hashTree>
         </hashTree>
@@ -637,16 +607,7 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.status</stringProp>
-            <stringProp name="EXPECTED_VALUE">200</stringProp>
-            <boolProp name="JSONVALIDATION">true</boolProp>
-            <boolProp name="EXPECT_NULL">false</boolProp>
-            <boolProp name="INVERT">false</boolProp>
-            <boolProp name="ISREGEX">false</boolProp>
-          </JSONPathAssertion>
-          <hashTree/>
-          <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.steps</stringProp>
+            <stringProp name="JSON_PATH">$.workflowSteps</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
             <boolProp name="JSONVALIDATION">false</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -656,7 +617,7 @@
           <hashTree/>
           <SizeAssertion guiclass="SizeAssertionGui" testclass="SizeAssertion" testname="Size Assertion" enabled="true">
             <stringProp name="Assertion.test_field">SizeAssertion.response_network_size</stringProp>
-            <stringProp name="SizeAssertion.size">1117</stringProp>
+            <stringProp name="SizeAssertion.size">588</stringProp>
             <intProp name="SizeAssertion.operator">1</intProp>
           </SizeAssertion>
           <hashTree/>
@@ -725,7 +686,7 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="51508">400</stringProp>
+              <stringProp name="49586">200</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
@@ -743,8 +704,8 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.status</stringProp>
-            <stringProp name="EXPECTED_VALUE">400</stringProp>
+            <stringProp name="JSON_PATH">$.sites[:1].steps[:1].httpStatus</stringProp>
+            <stringProp name="EXPECTED_VALUE">406</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
             <boolProp name="INVERT">false</boolProp>
@@ -752,19 +713,13 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.steps</stringProp>
+            <stringProp name="JSON_PATH">$.sites[:1].steps</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
             <boolProp name="JSONVALIDATION">false</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
             <boolProp name="INVERT">false</boolProp>
             <boolProp name="ISREGEX">false</boolProp>
           </JSONPathAssertion>
-          <hashTree/>
-          <SizeAssertion guiclass="SizeAssertionGui" testclass="SizeAssertion" testname="Size Assertion" enabled="true">
-            <stringProp name="Assertion.test_field">SizeAssertion.response_network_size</stringProp>
-            <stringProp name="SizeAssertion.size">2483</stringProp>
-            <intProp name="SizeAssertion.operator">1</intProp>
-          </SizeAssertion>
           <hashTree/>
         </hashTree>
       </hashTree>
@@ -841,7 +796,7 @@
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
             <stringProp name="JSON_PATH">$.name</stringProp>
-            <stringProp name="EXPECTED_VALUE">Complete Workflow</stringProp>
+            <stringProp name="EXPECTED_VALUE">Validate and Process D dot File Workflow</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
             <boolProp name="INVERT">false</boolProp>
@@ -849,16 +804,7 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.status</stringProp>
-            <stringProp name="EXPECTED_VALUE">200</stringProp>
-            <boolProp name="JSONVALIDATION">true</boolProp>
-            <boolProp name="EXPECT_NULL">false</boolProp>
-            <boolProp name="INVERT">false</boolProp>
-            <boolProp name="ISREGEX">false</boolProp>
-          </JSONPathAssertion>
-          <hashTree/>
-          <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.steps</stringProp>
+            <stringProp name="JSON_PATH">$.workflowSteps</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
             <boolProp name="JSONVALIDATION">false</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -868,7 +814,7 @@
           <hashTree/>
           <SizeAssertion guiclass="SizeAssertionGui" testclass="SizeAssertion" testname="Size Assertion" enabled="true">
             <stringProp name="Assertion.test_field">SizeAssertion.response_network_size</stringProp>
-            <stringProp name="SizeAssertion.size">1389</stringProp>
+            <stringProp name="SizeAssertion.size">609</stringProp>
             <intProp name="SizeAssertion.operator">1</intProp>
           </SizeAssertion>
           <hashTree/>
@@ -955,7 +901,7 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.status</stringProp>
+            <stringProp name="JSON_PATH">$.workflowSteps[:1].httpStatus</stringProp>
             <stringProp name="EXPECTED_VALUE">200</stringProp>
             <boolProp name="JSONVALIDATION">true</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -964,7 +910,7 @@
           </JSONPathAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.steps</stringProp>
+            <stringProp name="JSON_PATH">$.workflowSteps</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
             <boolProp name="JSONVALIDATION">false</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
@@ -974,7 +920,7 @@
           <hashTree/>
           <SizeAssertion guiclass="SizeAssertionGui" testclass="SizeAssertion" testname="Size Assertion" enabled="true">
             <stringProp name="Assertion.test_field">SizeAssertion.response_network_size</stringProp>
-            <stringProp name="SizeAssertion.size">880</stringProp>
+            <stringProp name="SizeAssertion.size">1107</stringProp>
             <intProp name="SizeAssertion.operator">1</intProp>
           </SizeAssertion>
           <hashTree/>

@@ -1,23 +1,65 @@
 sudo: required
 
+language: bash
+
 env:
-  matrix:
-    - TEST_NAME=''
   global:
     - DOCKER_COMPOSE_VERSION=1.23.2
 
 services:
   - docker
 
-before_install:
-  - sudo apt-get update
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
-  - chmod +x pull-containers.sh && ./pull-containers.sh
-install:
-  - echo "done"
+cache:
+  timeout: 1000
+  directories:
+    - $HOME/docker
 
-script:
-  - echo "Done"
+stages:
+  - precache
+  - test
+
+_test: &_test
+  stage: test
+  before_install:
+    - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+    - find . -type f -iname "*.sh" -exec chmod +x {} \;
+    - chmod +x docker-compose && sudo mv docker-compose /usr/local/bin
+  install:
+    - ./create_certificates.sh
+    - ./.travis/load_images.sh;
+  script:
+    - ./launch_services.sh
+    - ./launch_jmeter_servers.sh
+    - ./tests/integrations/$TRAVIS_JOB_NAME/test_plan.sh
+    - ./read_results.sh $TRAVIS_JOB_NAME
+
+jobs:
+  include:
+    - stage: precache
+      before_install:
+        - find . -type f -iname "*.sh" -exec chmod +x {} \;
+      install:
+        - mkdir -p $HOME/docker
+        - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+        - find . -name "*.sh" -exec chmod +x {} \;
+        - chmod +x docker-compose && sudo mv docker-compose /usr/local/bin
+      script:
+        - ./.travis/load_images.sh
+        - ./pull-containers.sh
+        - ./.travis/save_images.sh
+    - <<: *_test
+      name: waterauth
+    - <<: *_test
+      name: gateway
+    - <<: *_test
+      name: ddot
+    - <<: *_test
+      name: legacycru
+    - <<: *_test
+      name: notification
+    - <<: *_test
+      name: transformer
+    - <<: *_test
+      name: validator
+    - <<: *_test
+      name: wscfileexporter
