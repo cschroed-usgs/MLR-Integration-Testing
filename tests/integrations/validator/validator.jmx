@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.0 r1840935">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.1.1 r1855137">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Validator Testing" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -16,7 +16,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="SERVER_HOST" elementType="Argument">
             <stringProp name="Argument.name">SERVER_HOST</stringProp>
-            <stringProp name="Argument.value">${__P(SERVER_HOST,mlr.validator)}</stringProp>
+            <stringProp name="Argument.value">${__P(SERVER_HOST,mlr-int)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="SERVER_PORT" elementType="Argument">
@@ -26,7 +26,7 @@
           </elementProp>
           <elementProp name="LEGACY_CRU_HOST" elementType="Argument">
             <stringProp name="Argument.name">LEGACY_CRU_HOST</stringProp>
-            <stringProp name="Argument.value">${__P(LEGACY_CRU_HOST,mlr.legacy)}</stringProp>
+            <stringProp name="Argument.value">${__P(LEGACY_CRU_HOST,mlr-int)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="LEGACY_CRU_PORT" elementType="Argument">
@@ -36,7 +36,7 @@
           </elementProp>
           <elementProp name="DDOT_HOST" elementType="Argument">
             <stringProp name="Argument.name">DDOT_HOST</stringProp>
-            <stringProp name="Argument.value">${__P(DDOT_HOST,mlr.ddot.ingester)}</stringProp>
+            <stringProp name="Argument.value">${__P(DDOT_HOST,mlr-int)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="DDOT_PORT" elementType="Argument">
@@ -51,7 +51,7 @@
           </elementProp>
           <elementProp name="TRANSFORMER_HOST" elementType="Argument">
             <stringProp name="Argument.name">TRANSFORMER_HOST</stringProp>
-            <stringProp name="Argument.value">${__P(TRANSFORMER_HOST,mlr.legacy.transformer)}</stringProp>
+            <stringProp name="Argument.value">${__P(TRANSFORMER_HOST,mlr-int)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="TRANSFORMER_PORT" elementType="Argument">

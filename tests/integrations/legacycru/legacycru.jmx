@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.0 r1840935">
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.1.1 r1855137">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Legacy CRU Testing" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -16,7 +16,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="SERVER_HOST" elementType="Argument">
             <stringProp name="Argument.name">SERVER_HOST</stringProp>
-            <stringProp name="Argument.value">${__P(SERVER_HOST,mlr.legacy)}</stringProp>
+            <stringProp name="Argument.value">${__P(SERVER_HOST,mlr-int)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="SERVER_PORT" elementType="Argument">
@@ -47,18 +47,18 @@
         </CookieManager>
         <hashTree/>
         <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="NewSiteNumber" enabled="true">
-          <stringProp name="maximumValue">99999</stringProp>
-          <stringProp name="minimumValue">10000</stringProp>
-          <stringProp name="outputFormat">${__threadNum}</stringProp>
+          <stringProp name="maximumValue">99999999</stringProp>
+          <stringProp name="minimumValue">11111111</stringProp>
+          <stringProp name="outputFormat"></stringProp>
           <boolProp name="perThread">true</boolProp>
           <stringProp name="randomSeed"></stringProp>
           <stringProp name="variableName">NEW_SITE_NUMBER</stringProp>
         </RandomVariableConfig>
         <hashTree/>
         <RandomVariableConfig guiclass="TestBeanGUI" testclass="RandomVariableConfig" testname="NewAgency" enabled="true">
-          <stringProp name="maximumValue">999</stringProp>
-          <stringProp name="minimumValue">100</stringProp>
-          <stringProp name="outputFormat">${__threadNum}</stringProp>
+          <stringProp name="maximumValue">9999</stringProp>
+          <stringProp name="minimumValue">1000</stringProp>
+          <stringProp name="outputFormat"></stringProp>
           <boolProp name="perThread">true</boolProp>
           <stringProp name="randomSeed"></stringProp>
           <stringProp name="variableName">NEW_AGENCY</stringProp>
