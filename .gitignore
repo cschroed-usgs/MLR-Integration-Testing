@@ -1,4 +1,5 @@
 jmeter.log
 tests/output/**
 configuration/config/certificates/**/ssl.*
+configuration/config/certificates/**/water-auth.*
 .DS_Store
