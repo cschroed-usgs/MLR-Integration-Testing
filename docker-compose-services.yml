@@ -182,6 +182,10 @@
     mlr-validator:
       image: code.chs.usgs.gov:5001/wma/docker/mlr/mlr-validator:latest
       container_name: mlr-validator
+      volumes:
+        - type: bind
+          source: ./remote-references
+          target: /home/python/remote-references
       env_file:
         - configuration/config/common/config.env
         - configuration/secrets/common/secrets.env
