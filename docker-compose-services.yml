@@ -180,7 +180,7 @@
       << : *python-secrets
 
     mlr-validator:
-      image: code.chs.usgs.gov:5001/wma/docker/mlr/mlr-validator:latest
+      image: code.chs.usgs.gov:5001/wma/osd/mlr/mlr-validator:latest
       container_name: mlr-validator
       volumes:
         - type: bind
