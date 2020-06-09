@@ -35,7 +35,7 @@ Also, if you will be running the JMeter tests using the JMeter GUI instead of ru
 
 First, if you are using Docker Machine, edit `configuration/local/local.jmeter.properties` and replace `localhost` with the IP if your Docker VM. You can get that by running `docker-machine ip <machine name>` and subtituting the name of your VM that is running the Docker engine. If you are running native Docker, you can skip this.
 
-Second, edit `configuration/local/config/common/config.env`. In this file you will want to substitute the `water.auth.server` domain with the IP of your Docker engine. This will either be localhost if not running on Docker Machine or the IP of your Docker VM. You can get that by running `docker-machine ip <machine name>` and subtituting the name of your VM that is running the Docker engine.
+Second, edit `configuration/local/config/common/config.env`. In this file you will want to substitute the `auth.server` domain with the IP of your Docker engine. This will either be localhost if not running on Docker Machine or the IP of your Docker VM. You can get that by running `docker-machine ip <machine name>` and subtituting the name of your VM that is running the Docker engine.
 
 Also, before launching the services, you will want to generate SSL certificates that the services use. If you've already run the script to pull the containers from Artifactory, you won't need to do this here. Otherwise:
 
@@ -263,7 +263,7 @@ Before running any script, ensure it's executable by issuing the chmod command a
 
 - Figure out the IP for your Docker Machine VM via `docker-machine ip <vm name>`
 
-- Edit `configuration/local/config/common/config.env` and replace `water.auth.server` with IP of Docker VM
+- Edit `configuration/local/config/common/config.env` and replace `auth.server` with IP of Docker VM
 
 - Edit `configuration/local/local.jmeter.properties` and replace `localhost` with IP of Docker VM
 
@@ -275,7 +275,7 @@ Before running any script, ensure it's executable by issuing the chmod command a
 
 #### Using JMeter GUI with native Docker
 
-- Edit `configuration/local/config/common/config.env` and replace `water.auth.server` with `localhost`
+- Edit `configuration/local/config/common/config.env` and replace `auth.server` with `localhost`
 
 - Launch MLR stack: `./launch_services.sh`
 
