@@ -13,8 +13,6 @@
         target: /home/spring/ssl.crt
       - source: ssl_key
         target: /home/spring/ssl.key
-      - source: water_auth_crt
-        target: /certificates/water-auth.crt
       - source: ssl_crt
         target: /certificates/mlr.crt
 
@@ -25,18 +23,12 @@
         target: /home/python/certificates/ssl.crt
       - source: ssl_key
         target: /home/python/certificates/ssl.key
-      - source: water_auth_crt
-        target: /home/python/certificates/water-auth.crt
 
   secrets:
     ssl_crt:
-      file: ./configuration/config/certificates/ssl.crt
+      file: ./configuration/config/certificates/wildcard/ssl.crt
     ssl_key:
-      file: ./configuration/config/certificates/ssl.key
-    water_auth_crt:
-      file: ./configuration/config/certificates/water-auth.crt
-    water_auth_key:
-      file: ./configuration/config/certificates/water-auth.key
+      file: ./configuration/config/certificates/wildcard/ssl.key
 
   networks:
     mlr-it-net:
@@ -99,13 +91,13 @@
           target: /etc/x509/https/tls.key
       volumes:
         - type: bind
-          source: ./configuration/keycloak/local_realm.json
+          source: ./configuration/config/keycloak/local_realm.json
           target: /tmp/local_realm.json
         - type: bind
-          source: ./configuration/keycloak/load_realm.sh
+          source: ./configuration/config/keycloak/load_realm.sh
           target: /tmp/load_realm.sh
         - type: bind
-          source: ./configuration/keycloak/start_load_keycloak.sh
+          source: ./configuration/config/keycloak/start_load_keycloak.sh
           target: /opt/jboss/startup-scripts/start_load_keycloak.sh
 
     mlr-legacy:

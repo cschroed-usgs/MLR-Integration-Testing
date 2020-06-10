@@ -19,6 +19,18 @@ get_healthy_services () {
   docker ps -f "name=${SERVICE_NAMES// /|}" -f "health=healthy" --format "{{ .Names }}"
 }
 
+fetch_reference_lists () {
+  if [ ! -d remote-references ]; then
+    aws s3 sync s3://prod-owi-resources/resources/Application/mlr/ci/configuration/mlr-validator/remote-references/ remote-references
+    EXIT_CODE=$?
+    if [ $EXIT_CODE -ne 0  ]; then
+      rm -rf remote-references
+      echo "Failed to download reference lists from S3"
+      exit 1
+    fi
+  fi
+}
+
 launch_services () {
   docker-compose -f docker-compose-services.yml up --no-color --detach --renew-anon-volumes
 }
@@ -33,6 +45,7 @@ create_s3_bucket () {
 
 echo "Launching MLR services..."
 {
+  fetch_reference_lists
   launch_services
   EXIT_CODE=$?
 
