@@ -21,13 +21,17 @@ get_healthy_services () {
 
 fetch_reference_lists () {
   if [ ! -d remote-references ]; then
+    echo "Downloading reference lists..."
     aws s3 sync s3://prod-owi-resources/resources/Application/mlr/ci/configuration/mlr-validator/remote-references/ remote-references
     EXIT_CODE=$?
     if [ $EXIT_CODE -ne 0  ]; then
       rm -rf remote-references
-      echo "Failed to download reference lists from S3"
+      echo "Failed to download reference lists from S3. Are you logged in? ex: 'saml2aws login'"
       exit 1
     fi
+    echo "Finished downloading reference lists."
+  else
+    echo "Reference lists already present. Skipping Download."
   fi
 }
 

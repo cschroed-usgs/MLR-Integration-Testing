@@ -13,8 +13,7 @@
         target: /home/spring/ssl.crt
       - source: ssl_key
         target: /home/spring/ssl.key
-      - source: ssl_crt
-        target: /certificates/mlr.crt
+ 
 
   x-commons-secrets-python:
     &python-secrets
@@ -73,7 +72,11 @@
     mlr-keycloak:
       image: jboss/keycloak:10.0.0
       container_name: mlr-keycloak
-      network_mode: "host"
+      networks:
+        mlr-it-net:
+          aliases:
+            - mlr-keycloak
+      hostname: mlr-keycloak
       ports:
         - "9080:9080"
         - "9443:9443"
