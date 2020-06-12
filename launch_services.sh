@@ -13,7 +13,7 @@ SERVICE_NAMES="mlr-gateway \
   mlr-validator \
   mlr-wsc-file-exporter \
   mlr-legacy-db \
-  water-auth-server"
+  mlr-keycloak"
 
 get_healthy_services () {
   docker ps -f "name=${SERVICE_NAMES// /|}" -f "health=healthy" --format "{{ .Names }}"
@@ -36,7 +36,7 @@ fetch_reference_lists () {
 }
 
 launch_services () {
-  docker-compose -f docker-compose-services.yml up --no-color --detach --renew-anon-volumes
+  docker-compose -f docker-compose-services.yml up --no-color --renew-anon-volumes
 }
 
 destroy_services () {

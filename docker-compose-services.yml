@@ -87,6 +87,13 @@
         - KEYCLOAK_USER=admin
         - KEYCLOAK_PASSWORD=admin
       entrypoint: "/opt/jboss/tools/docker-entrypoint.sh -b 0.0.0.0 -Dkeycloak.profile.feature.upload_scripts=enabled -Djboss.socket.binding.port-offset=1000 -Djgroups.bind_addr=127.0.0.1 -Djboss.bind.address.private=0.0.0.0"
+      healthcheck:
+        test: ["CMD", "curl", "-fk", "https://localhost:9443/auth/"]
+        interval: 5s
+        timeout: 10s
+        retries: 10
+        start_period: 40s
+
       secrets:
         - source: ssl_crt
           target: /etc/x509/https/tls.crt
@@ -111,7 +118,7 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-legacy/config.env
         - configuration/secrets/mlr-legacy/secrets.env
-      command: "./wait-for.sh mlr-keycloak:9443 -t 60 -- ./wait-for.sh mlr.legacy.db:5432 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./wait-for.sh mlr.legacy.db:5432 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
@@ -131,7 +138,7 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-notification/config.env
         - configuration/secrets/mlr-notification/secrets.env
-      command: "./wait-for.sh mlr-keycloak:9443 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
@@ -151,7 +158,7 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-legacy-transformer/config.env
         - configuration/secrets/mlr-legacy-transformer/secrets.env
-      command: "./wait-for.sh mlr-keycloak:9443 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
@@ -170,7 +177,7 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-wsc-file-exporter/config.env
         - configuration/secrets/mlr-wsc-file-exporter/secrets.env
-      command: "./wait-for.sh mlr-keycloak:9443 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
@@ -193,7 +200,7 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-validator/config.env
         - configuration/secrets/mlr-validator/secrets.env
-      command: "./wait-for.sh mlr-keycloak:9443 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 150 -- ash -xv entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
@@ -212,7 +219,7 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-ddot-ingester/config.env
         - configuration/secrets/mlr-ddot-ingester/secrets.env
-      command: "./wait-for.sh mlr-keycloak:9443 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
@@ -231,7 +238,7 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-gateway/config.env
         - configuration/secrets/mlr-gateway/secrets.env
-      command: "./wait-for.sh mlr-keycloak:9443 -t 60 -- ./wait-for.sh mlr.legacy.db:5432 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./wait-for.sh mlr.legacy.db:5432 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
