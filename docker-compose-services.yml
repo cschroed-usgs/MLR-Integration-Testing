@@ -25,9 +25,9 @@
 
   secrets:
     ssl_crt:
-      file: ./configuration/config/certificates/wildcard/ssl.crt
+      file: ./configuration/config/certificates/ssl.crt
     ssl_key:
-      file: ./configuration/config/certificates/wildcard/ssl.key
+      file: ./configuration/config/certificates/ssl.key
 
   networks:
     mlr-it-net:
