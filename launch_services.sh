@@ -35,8 +35,42 @@ fetch_reference_lists () {
   fi
 }
 
+launch_keycloak () {
+  docker-compose -f docker-compose-services.yml up --no-color --detach --renew-anon-volumes mlr-keycloak
+  echo "Waiting for MLR KeyCloak to come up. This can take up to 2 minutes..."
+
+  count=1
+  limit=60
+  until docker-compose -f docker-compose-services.yml exec mlr-keycloak curl -fk --silent https://mlr-keycloak:9443/auth/realms/mlr/protocol/openid-connect/certs; do
+    echo "Testing KeyCloak health. Attempt $count of $limit"
+
+    sleep 2
+    count=$((count + 1))
+
+    # Did we hit our testing limit? If so, bail.
+    if [ $count -eq $limit ]; then
+      echo "Docker container could not reach a healthy status in $limit tries"
+      destroy_services
+      exit 1
+    fi
+
+  done
+
+  echo
+  echo "KeyCloak launched successfully."
+  echo
+}
+
 launch_services () {
-  docker-compose -f docker-compose-services.yml up --no-color --renew-anon-volumes
+  docker-compose -f docker-compose-services.yml up --no-color --renew-anon-volumes \
+    mlr-gateway \
+    mlr-legacy \
+    mlr-notification \
+    mlr-legacy-transformer \
+    mlr-ddot-ingester \
+    mlr-validator \
+    mlr-wsc-file-exporter \
+    mlr-legacy-db
 }
 
 destroy_services () {
@@ -50,6 +84,7 @@ create_s3_bucket () {
 echo "Launching MLR services..."
 {
   fetch_reference_lists
+  launch_keycloak
   launch_services
   EXIT_CODE=$?
 

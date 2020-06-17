@@ -541,8 +541,8 @@
   }, {
     "id": "ed9367d9-3c75-4da3-94e7-402df97b8bc6",
     "clientId": "mlr-local",
-    "rootUrl": "https://localhost:6026",
-    "adminUrl": "https://localhost:6026",
+    "rootUrl": "https://mlr-keycloak:6026",
+    "adminUrl": "https://mlr-keycloak:6026",
     "baseUrl": "/",
     "surrogateAuthRequired": false,
     "enabled": true,
@@ -550,12 +550,12 @@
     "clientAuthenticatorType": "client-secret",
     "secret": "mlr-secret",
     "redirectUris": [
-      "https://localhost:6026/*",
+      "https://mlr-keycloak:6026/*",
       "*"
     ],
     "webOrigins": [
       "+",
-      "https://localhost:6026"
+      "https://mlr-keycloak:6026"
     ],
     "notBefore": 0,
     "bearerOnly": false,

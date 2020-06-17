@@ -88,11 +88,11 @@
         - KEYCLOAK_PASSWORD=admin
       entrypoint: "/opt/jboss/tools/docker-entrypoint.sh -b 0.0.0.0 -Dkeycloak.profile.feature.upload_scripts=enabled -Djboss.socket.binding.port-offset=1000 -Djgroups.bind_addr=127.0.0.1 -Djboss.bind.address.private=0.0.0.0"
       healthcheck:
-        test: ["CMD", "curl", "-fk", "https://localhost:9443/auth/"]
-        interval: 5s
+        test: ["CMD", "curl", "-fk", "https://mlr-keycloak:9443/auth/realms/mlr/protocol/openid-connect/certs"]
+        interval: 3s
         timeout: 10s
         retries: 10
-        start_period: 40s
+        start_period: 90s
 
       secrets:
         - source: ssl_crt
@@ -189,7 +189,7 @@
       << : *python-secrets
 
     mlr-validator:
-      image: code.chs.usgs.gov:5001/wma/osd/mlr/mlr-validator:latest
+      image: carl-mlr-validator:latest
       container_name: mlr-validator
       volumes:
         - type: bind
