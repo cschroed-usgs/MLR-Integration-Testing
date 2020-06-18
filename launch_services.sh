@@ -62,7 +62,7 @@ launch_keycloak () {
 }
 
 launch_services () {
-  docker-compose -f docker-compose-services.yml up --no-color --renew-anon-volumes \
+  docker-compose -f docker-compose-services.yml up --no-color --renew-anon-volumes --detach \
     mlr-gateway \
     mlr-legacy \
     mlr-notification \

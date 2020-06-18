@@ -1,18 +1,13 @@
 ---
   version: '3.7'
 
-  x-commons-depends:
-    &depends-on-keycloak
-    depends_on:
-      - mlr-keycloak
-
   x-commons-secrets-java:
     &java-secrets
     secrets:
       - source: ssl_crt
-        target: /home/spring/ssl.crt
+        target: /certificates/ssl.crt
       - source: ssl_key
-        target: /home/spring/ssl.key
+        target: /certificates/ssl.key
  
 
   x-commons-secrets-python:
@@ -80,13 +75,12 @@
       ports:
         - "9080:9080"
         - "9443:9443"
-      #command: ["-b", "0.0.0.0", "-Djboss.socket.binding.port-offset=1000"]
       environment:
         - PROXY_ADDRESS_FORWARDING=true
         - DB_VENDOR=h2
         - KEYCLOAK_USER=admin
         - KEYCLOAK_PASSWORD=admin
-      entrypoint: "/opt/jboss/tools/docker-entrypoint.sh -b 0.0.0.0 -Dkeycloak.profile.feature.upload_scripts=enabled -Djboss.socket.binding.port-offset=1000 -Djgroups.bind_addr=127.0.0.1 -Djboss.bind.address.private=0.0.0.0"
+      entrypoint: "/opt/jboss/tools/docker-entrypoint.sh -Dkeycloak.profile.feature.upload_scripts=enabled -Djboss.socket.binding.port-offset=1000"
       healthcheck:
         test: ["CMD", "curl", "-fk", "https://mlr-keycloak:9443/auth/realms/mlr/protocol/openid-connect/certs"]
         interval: 3s
@@ -126,7 +120,6 @@
       ports:
         - "6010:6010"
       depends_on:
-        - mlr-keycloak
         - mlr-legacy-db
       << : *java-secrets
 
@@ -146,7 +139,6 @@
       ports:
         - "6025:6025"
       depends_on:
-        - mlr-keycloak
         - smtp-server
       << : *java-secrets
 
@@ -165,8 +157,6 @@
             - mlr-int
       ports:
         - "6020:6020"
-      depends_on:
-        - mlr-keycloak
       << : *python-secrets
 
     mlr-wsc-file-exporter:
@@ -184,12 +174,10 @@
             - mlr-int
       ports:
         - "6024:6024"
-      depends_on:
-        - mlr-keycloak
       << : *python-secrets
 
     mlr-validator:
-      image: carl-mlr-validator:latest
+      image: code.chs.usgs.gov:5001/wma/docker/mlr/mlr-validator:latest
       container_name: mlr-validator
       volumes:
         - type: bind
@@ -207,8 +195,6 @@
             - mlr-int
       ports:
         - "6027:6027"
-      depends_on:
-        - mlr-keycloak
       << : *python-secrets
 
     mlr-ddot-ingester:
@@ -226,8 +212,6 @@
             - mlr-int
       ports:
         - 6028:6028
-      depends_on:
-        - mlr-keycloak
       << : *python-secrets
 
     mlr-gateway:
@@ -247,5 +231,4 @@
         - 6026:6026
       depends_on:
         - mlr-legacy-db
-        - mlr-keycloak
       << : *java-secrets
