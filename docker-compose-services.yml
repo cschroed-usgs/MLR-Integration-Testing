@@ -172,6 +172,8 @@
         mlr-it-net:
           aliases:
             - mlr-int
+      depends_on:
+        - mock-s3
       ports:
         - "6024:6024"
       << : *python-secrets
