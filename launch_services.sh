@@ -41,7 +41,7 @@ launch_keycloak () {
 
   count=1
   limit=60
-  until docker-compose -f docker-compose-services.yml exec mlr-keycloak curl -fk --silent https://mlr-keycloak:9443/auth/realms/mlr/protocol/openid-connect/certs; do
+  until docker-compose -f docker-compose-services.yml exec mlr-keycloak curl -fk --max-time=1 --silent https://mlr-keycloak:9443/auth/realms/mlr/protocol/openid-connect/certs; do
     echo "Testing KeyCloak health. Attempt $count of $limit"
 
     sleep 2

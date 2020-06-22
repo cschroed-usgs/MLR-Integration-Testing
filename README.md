@@ -263,10 +263,6 @@ Before running any script, ensure it's executable by issuing the chmod command a
 
 - Figure out the IP for your Docker Machine VM via `docker-machine ip <vm name>`
 
-- Edit `configuration/local/config/common/config.env` and replace `auth.server` with IP of Docker VM
-
-- Edit `configuration/local/local.jmeter.properties` and replace `localhost` with IP of Docker VM
-
 - Export the `DOCKER_ENGINE_IP` variable by running `export DOCKER_ENGINE_IP=<ip of Docker VM>`
 
 - Launch MLR stack: `./launch_services.sh`
@@ -274,8 +270,6 @@ Before running any script, ensure it's executable by issuing the chmod command a
 - Launch jmeter: `jmeter -p configuration/local/local.jmeter.properties`
 
 #### Using JMeter GUI with native Docker
-
-- Edit `configuration/local/config/common/config.env` and replace `auth.server` with `localhost`
 
 - Launch MLR stack: `./launch_services.sh`
 
