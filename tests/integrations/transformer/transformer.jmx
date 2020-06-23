@@ -59,7 +59,7 @@
         </CookieManager>
         <hashTree/>
         <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="Login" enabled="true">
-          <stringProp name="IncludeController.includepath">../common/water-auth-login.jmx</stringProp>
+          <stringProp name="IncludeController.includepath">../common/auth-login.jmx</stringProp>
         </IncludeController>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Decimal Location" enabled="true">

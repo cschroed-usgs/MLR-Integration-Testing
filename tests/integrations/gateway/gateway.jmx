@@ -74,7 +74,7 @@
         </CookieManager>
         <hashTree/>
         <IncludeController guiclass="IncludeControllerGui" testclass="IncludeController" testname="Login to WaterAuth" enabled="true">
-          <stringProp name="IncludeController.includepath">../common/water-auth-login.jmx</stringProp>
+          <stringProp name="IncludeController.includepath">../common/auth-login.jmx</stringProp>
         </IncludeController>
         <hashTree/>
         <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="Define Variables" enabled="true">
@@ -143,7 +143,7 @@ vars.put(&quot;GATEWAY_SERVER_NUM&quot;, serverNumber);</stringProp>
           </collectionProp>
         </HeaderManager>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Perform Export Workflow - Failure" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Perform Export Workflow - Failure (Stateful)" enabled="true">
           <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
             <collectionProp name="HTTPFileArgs.files">
               <elementProp name="${TEST_FILES_DIR}/gateway/ddots/${GATEWAY_FILE_PREFIX}.update" elementType="HTTPFileArg">
@@ -290,7 +290,7 @@ vars.put(&quot;GATEWAY_SERVER_NUM&quot;, serverNumber);</stringProp>
           </JSONPathAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Perform Add Validation - Success" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Perform Add Validation - Success (Stateful)" enabled="true">
           <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
             <collectionProp name="HTTPFileArgs.files">
               <elementProp name="${TEST_FILES_DIR}/gateway/ddots/${GATEWAY_FILE_PREFIX}.add.${__threadNum}" elementType="HTTPFileArg">
@@ -361,7 +361,7 @@ vars.put(&quot;GATEWAY_SERVER_NUM&quot;, serverNumber);</stringProp>
           </JSONPathAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Perform Full Valid Add Workflow" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Perform Full Valid Add Workflow (Stateful)" enabled="true">
           <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
             <collectionProp name="HTTPFileArgs.files">
               <elementProp name="${TEST_FILES_DIR}/gateway/ddots/${GATEWAY_FILE_PREFIX}.add.${__threadNum}" elementType="HTTPFileArg">
