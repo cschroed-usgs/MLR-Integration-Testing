@@ -494,8 +494,7 @@ vars.put(&apos;newJson&apos;, JsonOutput.toJson(json))</stringProp>
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-  &quot;ddotLocation&quot;: ${EXISTING_JSON_1},&#xd;
-  &quot;existingLocation&quot;: {}&#xd;
+  &quot;ddotLocation&quot;: ${EXISTING_JSON_1}&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -536,16 +535,16 @@ vars.put(&apos;newJson&apos;, JsonOutput.toJson(json))</stringProp>
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="49586">200</stringProp>
+              <stringProp name="51508">400</stringProp>
             </collectionProp>
-            <stringProp name="Assertion.custom_message"></stringProp>
+            <stringProp name="Assertion.custom_message">BAD REQUEST</stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
-            <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">2</intProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">8</intProp>
           </ResponseAssertion>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="JSON Assertion" enabled="true">
-            <stringProp name="JSON_PATH">$.fatal_error_message</stringProp>
+            <stringProp name="JSON_PATH">$.error_message</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
             <boolProp name="JSONVALIDATION">false</boolProp>
             <boolProp name="EXPECT_NULL">false</boolProp>
