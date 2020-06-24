@@ -13,14 +13,64 @@ SERVICE_NAMES="mlr-gateway \
   mlr-validator \
   mlr-wsc-file-exporter \
   mlr-legacy-db \
-  water-auth-server"
+  mlr-keycloak"
 
 get_healthy_services () {
   docker ps -f "name=${SERVICE_NAMES// /|}" -f "health=healthy" --format "{{ .Names }}"
 }
 
+fetch_reference_lists () {
+  if [ ! -d remote-references ]; then
+    echo "Downloading reference lists..."
+    aws s3 sync s3://prod-owi-resources/resources/Application/mlr/ci/configuration/mlr-validator/remote-references/ remote-references
+    EXIT_CODE=$?
+    if [ $EXIT_CODE -ne 0  ]; then
+      rm -rf remote-references
+      echo "Failed to download reference lists from S3. Are you logged in? ex: 'saml2aws login'"
+      exit 1
+    fi
+    echo "Finished downloading reference lists."
+  else
+    echo "Reference lists already present. Skipping Download."
+  fi
+}
+
+launch_keycloak () {
+  docker-compose -f docker-compose-services.yml up --no-color --detach --renew-anon-volumes mlr-keycloak
+  echo "Waiting for MLR KeyCloak to come up. This can take up to 2 minutes..."
+
+  count=1
+  limit=60
+  until docker-compose -f docker-compose-services.yml exec mlr-keycloak curl -fk --max-time 1 --silent https://mlr-keycloak:9443/auth/realms/mlr/protocol/openid-connect/certs &> /dev/null; do
+    echo "Testing KeyCloak health. Attempt $count of $limit"
+
+    sleep 2
+    count=$((count + 1))
+
+    # Did we hit our testing limit? If so, bail.
+    if [ $count -eq $limit ]; then
+      echo "Docker container could not reach a healthy status in $limit tries"
+      destroy_services
+      exit 1
+    fi
+
+  done
+
+  echo
+  echo "KeyCloak launched successfully."
+  echo
+}
+
 launch_services () {
-  docker-compose -f docker-compose-services.yml up --no-color --detach --renew-anon-volumes
+  docker-compose -f docker-compose-services.yml up --no-color --renew-anon-volumes --detach \
+    mlr-gateway \
+    mlr-legacy \
+    mlr-notification \
+    mlr-legacy-transformer \
+    mlr-ddot-ingester \
+    mlr-validator \
+    mlr-wsc-file-exporter \
+    mlr-legacy-db
 }
 
 destroy_services () {
@@ -33,6 +83,8 @@ create_s3_bucket () {
 
 echo "Launching MLR services..."
 {
+  fetch_reference_lists
+  launch_keycloak
   launch_services
   EXIT_CODE=$?
 

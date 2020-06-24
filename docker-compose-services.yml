@@ -5,13 +5,10 @@
     &java-secrets
     secrets:
       - source: ssl_crt
-        target: /home/spring/ssl.crt
+        target: /certificates/ssl.crt
       - source: ssl_key
-        target: /home/spring/ssl.key
-      - source: water_auth_crt
-        target: /certificates/water-auth.crt
-      - source: ssl_crt
-        target: /certificates/mlr.crt
+        target: /certificates/ssl.key
+ 
 
   x-commons-secrets-python:
     &python-secrets
@@ -20,18 +17,12 @@
         target: /home/python/certificates/ssl.crt
       - source: ssl_key
         target: /home/python/certificates/ssl.key
-      - source: water_auth_crt
-        target: /home/python/certificates/water-auth.crt
 
   secrets:
     ssl_crt:
       file: ./configuration/config/certificates/ssl.crt
     ssl_key:
       file: ./configuration/config/certificates/ssl.key
-    water_auth_crt:
-      file: ./configuration/config/certificates/water-auth.crt
-    water_auth_key:
-      file: ./configuration/config/certificates/water-auth.key
 
   networks:
     mlr-it-net:
@@ -73,33 +64,45 @@
       ports:
         - "5432:5432"
 
-    water-auth-server:
-      image: code.chs.usgs.gov:5001/wma-devops-public/waterauth-server:latest
-      container_name: water-auth-server
-      env_file:
-        - configuration/config/common/config.env
-        - configuration/secrets/common/secrets.env
-        - configuration/config/water-auth-server/config.env
-        - configuration/secrets/water-auth-server/secrets.env
-      secrets:
-        - source: water_auth_crt
-          target: /home/spring/ssl.crt
-        - source: water_auth_key
-          target: /home/spring/ssl.key
-        - source: water_auth_crt
-          target: /home/spring/oauth-wildcard-sign.crt
-        - source: water_auth_key
-          target: /home/spring/oauth-wildcard-sign.key
-        - source: water_auth_crt
-          target: /home/spring/saml-wildcard-sign.crt
-        - source: water_auth_key
-          target: /home/spring/saml-wildcard-sign.key
+    mlr-keycloak:
+      image: jboss/keycloak:10.0.0
+      container_name: mlr-keycloak
       networks:
         mlr-it-net:
           aliases:
-            - water-auth
+            - mlr-keycloak
+      hostname: mlr-keycloak
       ports:
-        - 8443:8443
+        - "9080:9080"
+        - "9443:9443"
+      environment:
+        - PROXY_ADDRESS_FORWARDING=true
+        - DB_VENDOR=h2
+        - KEYCLOAK_USER=admin
+        - KEYCLOAK_PASSWORD=admin
+      entrypoint: "/opt/jboss/tools/docker-entrypoint.sh -Dkeycloak.profile.feature.upload_scripts=enabled -Djboss.socket.binding.port-offset=1000"
+      healthcheck:
+        test: ["CMD", "curl", "-fk", "https://mlr-keycloak:9443/auth/realms/mlr/protocol/openid-connect/certs"]
+        interval: 3s
+        timeout: 10s
+        retries: 10
+        start_period: 90s
+
+      secrets:
+        - source: ssl_crt
+          target: /etc/x509/https/tls.crt
+        - source: ssl_key
+          target: /etc/x509/https/tls.key
+      volumes:
+        - type: bind
+          source: ./configuration/config/keycloak/local_realm.json
+          target: /tmp/local_realm.json
+        - type: bind
+          source: ./configuration/config/keycloak/load_realm.sh
+          target: /tmp/load_realm.sh
+        - type: bind
+          source: ./configuration/config/keycloak/start_load_keycloak.sh
+          target: /opt/jboss/startup-scripts/start_load_keycloak.sh
 
     mlr-legacy:
       image: code.chs.usgs.gov:5001/wma/docker/mlr/mlr-legacy:latest
@@ -109,7 +112,7 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-legacy/config.env
         - configuration/secrets/mlr-legacy/secrets.env
-      command: "./wait-for.sh water-auth:8443 -t 60 -- ./wait-for.sh mlr.legacy.db:5432 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./wait-for.sh mlr.legacy.db:5432 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
@@ -117,7 +120,6 @@
       ports:
         - "6010:6010"
       depends_on:
-        - water-auth-server
         - mlr-legacy-db
       << : *java-secrets
 
@@ -129,7 +131,7 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-notification/config.env
         - configuration/secrets/mlr-notification/secrets.env
-      command: "./wait-for.sh water-auth:8443 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
@@ -137,7 +139,6 @@
       ports:
         - "6025:6025"
       depends_on:
-        - water-auth-server
         - smtp-server
       << : *java-secrets
 
@@ -149,15 +150,13 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-legacy-transformer/config.env
         - configuration/secrets/mlr-legacy-transformer/secrets.env
-      command: "./wait-for.sh water-auth:8443 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
             - mlr-int
       ports:
         - "6020:6020"
-      depends_on:
-        - water-auth-server
       << : *python-secrets
 
     mlr-wsc-file-exporter:
@@ -168,15 +167,17 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-wsc-file-exporter/config.env
         - configuration/secrets/mlr-wsc-file-exporter/secrets.env
-      command: "./wait-for.sh water-auth:8443 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
             - mlr-int
+      depends_on:
+        - mock-s3
       ports:
         - "6024:6024"
       depends_on:
-        - water-auth-server
+        - mock-s3
       << : *python-secrets
 
     mlr-validator:
@@ -191,15 +192,13 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-validator/config.env
         - configuration/secrets/mlr-validator/secrets.env
-      command: "./wait-for.sh water-auth:8443 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 150 -- ash -xv entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
             - mlr-int
       ports:
         - "6027:6027"
-      depends_on:
-        - water-auth-server
       << : *python-secrets
 
     mlr-ddot-ingester:
@@ -210,15 +209,13 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-ddot-ingester/config.env
         - configuration/secrets/mlr-ddot-ingester/secrets.env
-      command: "./wait-for.sh water-auth:8443 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
             - mlr-int
       ports:
         - 6028:6028
-      depends_on:
-        - water-auth-server
       << : *python-secrets
 
     mlr-gateway:
@@ -229,7 +226,7 @@
         - configuration/secrets/common/secrets.env
         - configuration/config/mlr-gateway/config.env
         - configuration/secrets/mlr-gateway/secrets.env
-      command: "./wait-for.sh water-auth:8443 -t 60 -- ./wait-for.sh mlr.legacy.db:5432 -t 60 -- ./entrypoint.sh"
+      command: "./wait-for.sh mlr-keycloak:9443 -t 120 -- ./wait-for.sh mlr.legacy.db:5432 -t 120 -- ./entrypoint.sh"
       networks:
         mlr-it-net:
           aliases:
@@ -238,5 +235,4 @@
         - 6026:6026
       depends_on:
         - mlr-legacy-db
-        - water-auth-server
       << : *java-secrets
