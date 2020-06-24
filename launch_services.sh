@@ -49,7 +49,8 @@ launch_keycloak () {
 
     # Did we hit our testing limit? If so, bail.
     if [ $count -eq $limit ]; then
-      echo "Docker container could not reach a healthy status in $limit tries"
+      echo "Docker container could not reach a healthy status in $limit tries. Logs follow."
+      docker-compose -f docker-compose-services.yml logs --no-color mlr-keycloak || true
       destroy_services
       exit 1
     fi
