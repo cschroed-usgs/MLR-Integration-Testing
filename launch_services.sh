@@ -37,10 +37,10 @@ fetch_reference_lists () {
 
 launch_keycloak () {
   docker-compose -f docker-compose-services.yml up --no-color --detach --renew-anon-volumes mlr-keycloak
-  echo "Waiting for MLR KeyCloak to come up. This can take up to 5 minutes..."
+  echo "Waiting for MLR KeyCloak to come up. This can take up to 3 minutes..."
 
   count=1
-  limit=150
+  limit=60
   until docker-compose -f docker-compose-services.yml exec mlr-keycloak curl -fk --max-time 1 https://mlr-keycloak:9443/auth/realms/mlr/protocol/openid-connect/certs; do
     echo "Testing KeyCloak health. Attempt $count of $limit"
 
