@@ -97,11 +97,11 @@
   &quot;minorCivilDivisionCode&quot;: &quot;string&quot;,&#xd;
   &quot;nationalAquiferCode&quot;: &quot;string&quot;,&#xd;
   &quot;nationalWaterUseCode&quot;: &quot;string&quot;,&#xd;
-  &quot;primaryUseOfSite&quot;: &quot;string&quot;,&#xd;
+  &quot;primaryUseOfSiteCode&quot;: &quot;string&quot;,&#xd;
   &quot;primaryUseOfWaterCode&quot;: &quot;string&quot;,&#xd;
   &quot;projectNumber&quot;: &quot;string&quot;,&#xd;
   &quot;remarks&quot;: &quot;string&quot;,&#xd;
-  &quot;secondaryUseOfSite&quot;: &quot;string&quot;,&#xd;
+  &quot;secondaryUseOfSiteCode&quot;: &quot;string&quot;,&#xd;
   &quot;secondaryUseOfWaterCode&quot;: &quot;string&quot;,&#xd;
   &quot;siteEstablishmentDate&quot;: &quot;string&quot;,&#xd;
   &quot;siteNumber&quot;: &quot;string&quot;,&#xd;
@@ -212,11 +212,11 @@
   &quot;minorCivilDivisionCode&quot;: &quot;string&quot;,&#xd;
   &quot;nationalAquiferCode&quot;: &quot;string&quot;,&#xd;
   &quot;nationalWaterUseCode&quot;: &quot;string&quot;,&#xd;
-  &quot;primaryUseOfSite&quot;: &quot;string&quot;,&#xd;
+  &quot;primaryUseOfSiteCode&quot;: &quot;string&quot;,&#xd;
   &quot;primaryUseOfWaterCode&quot;: &quot;string&quot;,&#xd;
   &quot;projectNumber&quot;: &quot;string&quot;,&#xd;
   &quot;remarks&quot;: &quot;string&quot;,&#xd;
-  &quot;secondaryUseOfSite&quot;: &quot;string&quot;,&#xd;
+  &quot;secondaryUseOfSiteCode&quot;: &quot;string&quot;,&#xd;
   &quot;secondaryUseOfWaterCode&quot;: &quot;string&quot;,&#xd;
   &quot;siteEstablishmentDate&quot;: &quot;string&quot;,&#xd;
   &quot;siteNumber&quot;: &quot;string&quot;,&#xd;
