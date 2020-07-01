@@ -79,9 +79,9 @@ Once the JMeter GUI is loaded, you should be able to run any of the tests includ
 
 #### Running JMeter tests headless in manager/worker configuration
 
-Once youthe service stack and the JMeter workers are running and healthy, you can run integration headlessly via a script.
+Once the service stack and the JMeter workers are running and healthy, you can run integration headlessly via a test plan script.
 
-For example, to run the test for the DDOT files...
+For example, to run the tests for the DDOT files...
 
 ```bash
 chmod +x tests/integrations/ddot/test_plan.sh
@@ -92,12 +92,12 @@ Test Plan shell scripts...
 
 * launch a manager JMeter container
 * Attach the manager to the same docker network that the JMeter and MLR services stack use
-* mounts necessary volumes for configuration files, input files and output directories
-* runs the specified test by pushing the test out to the three JMeter worker nodes.
-* waits for the tests to be completed
-* gathers the output
-* puts it into the `tests/output` directory on the docker host
-* shuts down and removes the JMeter manager container
+* mount necessary volumes for configuration files, input files and output directories
+* run the specified test by pushing the test out to the three JMeter worker nodes.
+* wait for the tests to be completed
+* gather the output
+* put it into the `tests/output` directory on the docker host
+* shut down and remove the JMeter manager container
 
 For the ddot test output, you'd go to `tests/output/ddot/jmeter-output`
 
