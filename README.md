@@ -5,25 +5,7 @@ This project is a working set of integration tests that may be run against
 the MLR project. The tests are written using JMeter to go against a live, local MLR
 stack running on the Docker engine.
 
-#### Running the MLR stack When not on the USGS network
-
-Feel free to skip this section if you are on the USGS network.
-
-The MLR project is a set of Docker images that are served from an Artifactory instance within the Water Mission Area's data center. Through a reverse proxy setup, users on the USGS network are able to point their Docker engine at the Artifactory instance using the internal address to pull images (e.g. `cidasdpdasartip.cr.usgs.gov:8447/mlr/mlr-legacy-db:latest`). As such, no routing magic needs to happen on the user's machine in order to pull the images needed. However, when not on the USGS network, a developer must still be able to pull hosted images from Artifactory. In order to accomplish this, we use a running NGINX Docker container as a reverse proxy for localhost to point to `https://cida.usgs.gov/artifactory/api/docker/owi-docker/v2/` to pull the needed Docker images. This is required because the Docker engine only will pull images against a host at the root context or at a specific port. Therefore Docker cannot pull from `cida.usgs.gov/artifactory/api/docker/owi-docker/v2/` but can from `localhost` which NGINX proxies to Artifactory.
-
-Ensure that the script to pull the images is executable:
-
-`$ chmod +x pull-containers.sh`
-
-Then execute the script:
-
-`$ ./pull-containers.sh`
-
-The script will first create the SSL certificates needed by NGINX to serve as an SSL enabled reverse proxy. It will then launch NGINX, sleep for 5 seconds to give NGINX time to come up and then will use NGINX to pull the images. The script will then shut down NGINX.
-
-The SSL certificates created are stored in the `ssl/` subdirectory. These certificates are part of the `.gitignore` file so they are not checked in.
-
-### Launching the services
+#### Launching the services
 
 If you are using Docker Machine and your Docker engine does not run on localhost, before launching the service stack, make sure that you create and export the `DOCKER_ENGINE_IP` variable in bash, setting it to the IP address of your Docker VM. This ensures that the launch script properly sets up the mock S3 bucket also running in a Docker container by ending curl commands to it. Using the following command properly exports the variable in bash. Don't forget to substitute the name of your Docker machine in the marked portion of the command:
 
@@ -37,7 +19,7 @@ First, if you are using Docker Machine, edit `configuration/local/local.jmeter.p
 
 Second, edit `configuration/local/config/common/config.env`. In this file you will want to substitute the `auth.server` domain with the IP of your Docker engine. This will either be localhost if not running on Docker Machine or the IP of your Docker VM. You can get that by running `docker-machine ip <machine name>` and subtituting the name of your VM that is running the Docker engine.
 
-Also, before launching the services, you will want to generate SSL certificates that the services use. If you've already run the script to pull the containers from Artifactory, you won't need to do this here. Otherwise:
+Also, before launching the services, you will want to generate SSL certificates that the services use. Otherwise:
 
 ```
 $ chmod +x ./create_certificates.sh && ./create_certificates.sh
@@ -255,9 +237,6 @@ Before running any script, ensure it's executable by issuing the chmod command a
 
 - `chmod +x create_certificates.sh && ./create_certificates.sh`
 
-#### Working off of the USGS network
-
-- `./pull-containers.sh`
 
 #### Using JMeter GUI with Docker Machine
 
