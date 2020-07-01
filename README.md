@@ -31,26 +31,26 @@ chmod +x destroy_services.sh
 ./destroy_services.sh
 ```
 
-#### Launching JMeter slave servers
+#### Launching JMeter servers
 
 If you will be running JMeter tests using the JMeter GUI, you can skip this section.
 
-In order to perform the integration tests on MLR, JMeter is launched in a master/slave configuration. First, we launch three JMeter slave containers that sit and wait for the JMeter master to come online and provide instructions for testing. Once the testing has completed, the output files are provided back to master and written onto the file system. At this point, more testing may be run or the slaves may be shut down.
+In order to perform the integration tests on MLR, JMeter is launched in a manager/worker configuration. First, we launch three JMeter worker containers that sit and wait for the JMeter manager to come online and provide instructions for testing. Once the testing has completed, the output files are provided back to the manager and written onto the file system. At this point, more testing may be run or the workers may be shut down.
 
-In order to launch the JMeter slave containers, simply ensure the `launch_jmeter_servers.sh` script is executable and run it:
+In order to launch the JMeter worker containers, simply ensure the `launch_jmeter_servers.sh` script is executable and run it:
 
+```bash
+chmod +x launch_jmeter_servers.sh
+./launch_jmeter_servers.sh
 ```
-$ chmod +x launch_jmeter_servers.sh
-$ ./launch_jmeter_servers.sh
-```
 
-If this is your first time launching these containers, Docker will build the JMeter image based on the Dockerfile located @ `jmeter-docker/base/Dockerfile`. This Dockerfile builds a JMeter Docker image using version 5.0 of JMeter downloaded from Apache.
+If this is your first time launching these containers, Docker will build the JMeter image based on the Dockerfile located @ `jmeter-docker/base/Dockerfile`.
 
 You may see a warning about orphan containers if you're already running the MLR stack. You may disregard those warnings.
 
-#### Destroying JMeter slave servers
+#### Destroying JMeter servers
 
-Once your testing has completed or you'd like to bring down the JMeter slave servers, ensure that the `destroy_jmeter_servers.sh` script is executable and run it:
+Once your testing has completed or you'd like to bring down the JMeter worker servers, ensure that the `destroy_jmeter_servers.sh` script is executable and run it:
 
 ```
 $ chmod +x destroy_jmeter_servers.sh
@@ -73,19 +73,19 @@ You may see a warning about orphan containers if you're already running the MLR 
 
 #### Running JMeter tests via JMeter GUI
 
-Once the MLR stack and the JMeter slave servers are up and running, you can run the JMeter tests via the JMeter GUI. Running via the GUI is the easiest way to visualize and edit the current set of tests.
+Once the MLR stack and the JMeter worker servers are up and running, you can run the JMeter tests via the JMeter GUI. Running via the GUI is the easiest way to visualize and edit the current set of tests.
 
 Ensure you have JMeter >= 5.0 installed on your system and from the root project directory, issue the following command:
 
 `$ jmeter -p configuration/local/local.jmeter.properties`
 
-We use this local properties file as a source for key value pairs to override the default properties in the JMeter tests. The reason is that the JMeter tests include hostnames that only make sense if running the JMeter tests from within the Docker stack network that's created when the services stack is launched. That's what we do when we run the master/slave configuration for JMeter but when running with the JMeter GUI, we end up using the IP address of the Docker engine itself (localhost or the IP address of the docker machine VM)
+We use this local properties file as a source for key value pairs to override the default properties in the JMeter tests. The reason is that the JMeter tests include hostnames that only make sense if running the JMeter tests from within the Docker stack network that's created when the services stack is launched. That's what we do when we run the manager/worker configuration for JMeter but when running with the JMeter GUI, we end up using the IP address of the Docker engine itself (localhost or the IP address of the docker machine VM)
 
 Once the JMeter GUI is loaded, you should be able to run any of the tests included in this project.
 
-#### Running JMeter tests headless in master/slave configuration
+#### Running JMeter tests headless in manager/worker configuration
 
-Each integration test also comes with a shell script that launches. Once you have the service stack running and healthy and you've launched the JMeter slaves, you can run the testing script for any of the included tests.
+Each integration test also comes with a shell script that launches. Once you have the service stack running and healthy and you've launched the JMeter workers, you can run the testing script for any of the included tests.
 
 For example, to run the test for the DDOT files, ensure that the script to do so is executable and then run it:
 
@@ -109,9 +109,9 @@ Tidying up remote @ Wed Dec 12 22:15:26 UTC 2018 (1544652926912)
 ... end of run
 ```
 
-What happens during the run is the shell script launches a master JMeter container, attaches it to the network that the jmeter and MLR services stack runs on, mounts necessary volumes for configuration files, input files and output directories, and runs the specified test by pushing the test out to the three JMeter slave nodes.
+What happens during the run is the shell script launches a manager JMeter container, attaches it to the network that the jmeter and MLR services stack runs on, mounts necessary volumes for configuration files, input files and output directories, and runs the specified test by pushing the test out to the three JMeter worker nodes.
 
-It then waits for the tests to be completed, gathers the output, puts it into the `tests/output` directory in the project and shuts down and removes the master JMeter container.
+It then waits for the tests to be completed, gathers the output, puts it into the `tests/output` directory in the project and shuts down and removes the manager JMeter container.
 
 For the ddot test output, you'd go to `tests/output/ddot/jmeter-output`
 
@@ -121,7 +121,7 @@ In addition to the service integration tests, this project also includes a basic
 
 The load tests do include the addition of new sites into the database, and as such subsequent runs have the possibility of site collisions generating validation errors. To combat this issue the load tests work by generating a unique site number for every test that is run, starting from a configurable starting site number (because site numbers have length validation requirements the minimum starting site number is 100000000). At the time of writing the load test generates 1111 sites per user per run.
 
-#### Running load tests headless in master/slave configuration
+#### Running load tests headless in manager/worker configuration
 
 The load tests include a headless test plan script similar to the service integration tests described above. This script is configured to run the load test 5 times with `1`, `4`, `8`, `16`, and `32` users, and because this projec is setup to run headless tests on 3 separate testing servers this results in the tests actually consisting of `3`, `12`, `24`, `48`, and `96` users. The headless load tests will output their results into the `tests/output/load/` directory and into total-user-specific sub-directories (i.e: `tests/output/load/3/`). |
 
@@ -160,15 +160,15 @@ Before running any script, ensure it's executable by issuing the chmod command a
 
 - Launch jmeter: `jmeter -p configuration/local/local.jmeter.properties`
 
-#### Using Docker Master/Slave scripting
+#### Using Docker manager/worker scripting
 
 - Launch MLR stack: `./launch_services.sh`
 
-- Launch JMeter Slave stack: `./launch_jmeter_servers.sh`
+- Launch JMeter worker stack: `./launch_jmeter_servers.sh`
 
 - Run any JMeter test individually: `tests/integrations/<test name>/test_plan.sh`
 
-#### Destroying JMeter slave stack
+#### Destroying JMeter worker stack
 
 - `./destroy_jmeter_servers.sh`
 
