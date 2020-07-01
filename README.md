@@ -52,72 +52,58 @@ You may see a warning about orphan containers if you're already running the MLR 
 
 Once your testing has completed or you'd like to bring down the JMeter worker servers, ensure that the `destroy_jmeter_servers.sh` script is executable and run it:
 
-```
-$ chmod +x destroy_jmeter_servers.sh
-$ ./destroy_jmeter_servers.sh
-$ ./destroy_jmeter_servers.sh
-
-Bringing down JMeter server services...
-Stopping mlr-integration-testing_jmeter-server-2_1 ... done
-Stopping mlr-integration-testing_jmeter-server-3_1 ... done
-Stopping mlr-integration-testing_jmeter-server-1_1 ... done
-WARNING: Found orphan containers (mlr-gateway, mlr-legacy, mlr-ddot-ingester, mlr-legacy-transformer, mlr-validator, mlr-notification, mlr-wsc-file-exporter, water-auth-server, mlr-integration-testing_mock-s3_1, mlr-integration-testing_smtp-server_1, mlr-legacy-db) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up.
-Removing mlr-integration-testing_jmeter-server-2_1 ... done
-Removing mlr-integration-testing_jmeter-server-3_1 ... done
-Removing mlr-integration-testing_jmeter-server-1_1 ... done
-Network mlr-it-net is external, skipping
-Done
-```
-
 You may see a warning about orphan containers if you're already running the MLR stack. You may disregard those warnings.
 
 #### Running JMeter tests via JMeter GUI
 
 Once the MLR stack and the JMeter worker servers are up and running, you can run the JMeter tests via the JMeter GUI. Running via the GUI is the easiest way to visualize and edit the current set of tests.
 
+Add the following entries to `/etc/hosts`.
+
+```
+127.0.0.1       mlr-int
+127.0.0.1       mlr-keycloak
+```
+
+These mappings ensure that the JMeter GUI runs tests against your local services.
+
 Ensure you have JMeter >= 5.0 installed on your system and from the root project directory, issue the following command:
 
 `$ jmeter -p configuration/local/local.jmeter.properties`
 
-We use this local properties file as a source for key value pairs to override the default properties in the JMeter tests. The reason is that the JMeter tests include hostnames that only make sense if running the JMeter tests from within the Docker stack network that's created when the services stack is launched. That's what we do when we run the manager/worker configuration for JMeter but when running with the JMeter GUI, we end up using the IP address of the Docker engine itself (localhost or the IP address of the docker machine VM)
+This local properties overrides the default properties in the JMeter tests.
+
+Note: Historically this properties file was necessary to parameterize the hostnames of the dockerized services. Now that we recommend hacking the host file, it's not clear if we need to continue to do this.
 
 Once the JMeter GUI is loaded, you should be able to run any of the tests included in this project.
 
 #### Running JMeter tests headless in manager/worker configuration
 
-Each integration test also comes with a shell script that launches. Once you have the service stack running and healthy and you've launched the JMeter workers, you can run the testing script for any of the included tests.
+Once youthe service stack and the JMeter workers are running and healthy, you can run integration headlessly via a script.
 
-For example, to run the test for the DDOT files, ensure that the script to do so is executable and then run it:
+For example, to run the test for the DDOT files...
 
-```
-$ chmod +x tests/integrations/ddot/test_plan.sh
-$ tests/integrations/ddot/test_plan.sh
-Dec 12, 2018 10:15:09 PM java.util.prefs.FileSystemPreferences$1 run
-INFO: Created user preferences directory.
-Creating summariser <summary>
-Created the tree successfully using /tests/integrations/ddot/ddot.jmx
-Configuring remote engine: jmeter.server.1
-Using local port: 60000
-Configuring remote engine: jmeter.server.2
-Configuring remote engine: jmeter.server.3
-Starting remote engines
-Starting the test @ Wed Dec 12 22:15:12 UTC 2018 (1544652912143)
-Remote engines have been started
-Waiting for possible Shutdown/StopTestNow/Heapdump message on port 4445
-summary =    300 in 00:00:11 =   27.3/s Avg:    23 Min:     3 Max:   354 Err:     0 (0.00%)
-Tidying up remote @ Wed Dec 12 22:15:26 UTC 2018 (1544652926912)
-... end of run
+```bash
+chmod +x tests/integrations/ddot/test_plan.sh
+./tests/integrations/ddot/test_plan.sh
 ```
 
-What happens during the run is the shell script launches a manager JMeter container, attaches it to the network that the jmeter and MLR services stack runs on, mounts necessary volumes for configuration files, input files and output directories, and runs the specified test by pushing the test out to the three JMeter worker nodes.
+Test Plan shell scripts...
 
-It then waits for the tests to be completed, gathers the output, puts it into the `tests/output` directory in the project and shuts down and removes the manager JMeter container.
+* launch a manager JMeter container
+* Attach the manager to the same docker network that the JMeter and MLR services stack use
+* mounts necessary volumes for configuration files, input files and output directories
+* runs the specified test by pushing the test out to the three JMeter worker nodes.
+* waits for the tests to be completed
+* gathers the output
+* puts it into the `tests/output` directory on the docker host
+* shuts down and removes the JMeter manager container
 
 For the ddot test output, you'd go to `tests/output/ddot/jmeter-output`
 
 ### Load Tests
 
-In addition to the service integration tests, this project also includes a basic load test for the MLR system. The load test can be found in the `tests/integrations/load` directory. The load test is Jmeter project is setup to run a set of tests a single time, with a configurable number of users. 
+In addition to the service integration tests, this project also includes a basic load test for the MLR system. The load test can be found in the `tests/integrations/load` directory. The load test is Jmeter project is setup to run a set of tests a single time, with a configurable number of users.
 
 The load tests do include the addition of new sites into the database, and as such subsequent runs have the possibility of site collisions generating validation errors. To combat this issue the load tests work by generating a unique site number for every test that is run, starting from a configurable starting site number (because site numbers have length validation requirements the minimum starting site number is 100000000). At the time of writing the load test generates 1111 sites per user per run.
 
