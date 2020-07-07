@@ -147,3 +147,6 @@ Note that because tests are only being run through the GUI the number of users p
 ### Destroying MLR stack
 
 * `./destroy_services.sh`
+
+## Troubleshooting
+If you receive certificate errors while pulling or building docker images on VPN, try turning off the VPN. Alternatively, try adding the DOI SSL Intercept Root Certificate to your system certificate store. Root certificate retrieval advice [here](https://github.com/usgs/best-practices/blob/master/ssl/WorkingWithinSSLIntercept.md). Certificate installation advice [here](https://docs.docker.com/registry/insecure/#docker-still-complains-about-the-certificate-when-using-authentication).
